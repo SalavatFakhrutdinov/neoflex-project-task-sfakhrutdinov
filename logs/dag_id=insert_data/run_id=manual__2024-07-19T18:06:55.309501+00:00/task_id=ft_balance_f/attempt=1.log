@@ -1,0 +1,113 @@
+[2024-07-19T18:07:12.224+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-07-19T18:07:12.312+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: insert_data.ft_balance_f manual__2024-07-19T18:06:55.309501+00:00 [queued]>
+[2024-07-19T18:07:12.365+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: insert_data.ft_balance_f manual__2024-07-19T18:06:55.309501+00:00 [queued]>
+[2024-07-19T18:07:12.369+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 3
+[2024-07-19T18:07:12.417+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): ft_balance_f> on 2024-07-19 18:06:55.309501+00:00
+[2024-07-19T18:07:12.450+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62: DeprecationWarning: This process (pid=3729) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2024-07-19T18:07:12.463+0000] {standard_task_runner.py:64} INFO - Started process 3739 to run task
+[2024-07-19T18:07:12.461+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'insert_data', 'ft_balance_f', 'manual__2024-07-19T18:06:55.309501+00:00', '--job-id', '360', '--raw', '--subdir', 'DAGS_FOLDER/insert_data.py', '--cfg-path', '/tmp/tmpre_u0wmq']
+[2024-07-19T18:07:12.474+0000] {standard_task_runner.py:91} INFO - Job 360: Subtask ft_balance_f
+[2024-07-19T18:07:12.689+0000] {task_command.py:426} INFO - Running <TaskInstance: insert_data.ft_balance_f manual__2024-07-19T18:06:55.309501+00:00 [running]> on host 04b0ec8dd5cd
+[2024-07-19T18:07:13.133+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sfakhrutdinov' AIRFLOW_CTX_DAG_ID='insert_data' AIRFLOW_CTX_TASK_ID='ft_balance_f' AIRFLOW_CTX_EXECUTION_DATE='2024-07-19T18:06:55.309501+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-07-19T18:06:55.309501+00:00'
+[2024-07-19T18:07:13.138+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-07-19T18:07:13.361+0000] {base.py:84} INFO - Using connection ID 'postgres-db' for task execution.
+[2024-07-19T18:07:14.088+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-07-19T18:07:14.139+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.UndefinedColumn: column "ON_DATE" of relation "ft_balance_f" does not exist
+LINE 1: INSERT INTO ds.ft_balance_f ("ON_DATE", "ACCOUNT_RK", "CURRE...
+                                     ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/insert_data.py", line 13, in insert_data
+    df.to_sql(table_name, engine, schema="ds", if_exists="append", index=False)
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 3008, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 788, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1958, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1507, in insert_records
+    raise err
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1498, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1059, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 951, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1385, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1890, in _execute_context
+    self.dialect.do_executemany(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column "ON_DATE" of relation "ft_balance_f" does not exist
+LINE 1: INSERT INTO ds.ft_balance_f ("ON_DATE", "ACCOUNT_RK", "CURRE...
+                                     ^
+
+[SQL: INSERT INTO ds.ft_balance_f ("ON_DATE", "ACCOUNT_RK", "CURRENCY_RK", "BALANCE_OUT") VALUES (%(ON_DATE)s, %(ACCOUNT_RK)s, %(CURRENCY_RK)s, %(BALANCE_OUT)s)]
+[parameters: ({'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 36237725, 'CURRENCY_RK': 35, 'BALANCE_OUT': 38318.13}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 24656, 'CURRENCY_RK': 35, 'BALANCE_OUT': 80533.62}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 18849846, 'CURRENCY_RK': 34, 'BALANCE_OUT': 63891.96}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 1972647, 'CURRENCY_RK': 34, 'BALANCE_OUT': 5087732.1}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 34157174, 'CURRENCY_RK': 34, 'BALANCE_OUT': 7097806.9}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 48829156, 'CURRENCY_RK': 34, 'BALANCE_OUT': 87620.47}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 13905, 'CURRENCY_RK': 34, 'BALANCE_OUT': 129554.0}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 17244, 'CURRENCY_RK': 34, 'BALANCE_OUT': 2025852.49}  ... displaying 10 of 114 total bound parameter sets ...  {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 131824186, 'CURRENCY_RK': 34, 'BALANCE_OUT': 100000.0}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 331483502, 'CURRENCY_RK': 34, 'BALANCE_OUT': 5000000.0})]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+[2024-07-19T18:07:14.445+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=insert_data, task_id=ft_balance_f, run_id=manual__2024-07-19T18:06:55.309501+00:00, execution_date=20240719T180655, start_date=20240719T180712, end_date=20240719T180714
+[2024-07-19T18:07:14.624+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 360 for task ft_balance_f ((psycopg2.errors.UndefinedColumn) column "ON_DATE" of relation "ft_balance_f" does not exist
+LINE 1: INSERT INTO ds.ft_balance_f ("ON_DATE", "ACCOUNT_RK", "CURRE...
+                                     ^
+
+[SQL: INSERT INTO ds.ft_balance_f ("ON_DATE", "ACCOUNT_RK", "CURRENCY_RK", "BALANCE_OUT") VALUES (%(ON_DATE)s, %(ACCOUNT_RK)s, %(CURRENCY_RK)s, %(BALANCE_OUT)s)]
+[parameters: ({'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 36237725, 'CURRENCY_RK': 35, 'BALANCE_OUT': 38318.13}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 24656, 'CURRENCY_RK': 35, 'BALANCE_OUT': 80533.62}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 18849846, 'CURRENCY_RK': 34, 'BALANCE_OUT': 63891.96}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 1972647, 'CURRENCY_RK': 34, 'BALANCE_OUT': 5087732.1}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 34157174, 'CURRENCY_RK': 34, 'BALANCE_OUT': 7097806.9}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 48829156, 'CURRENCY_RK': 34, 'BALANCE_OUT': 87620.47}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 13905, 'CURRENCY_RK': 34, 'BALANCE_OUT': 129554.0}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 17244, 'CURRENCY_RK': 34, 'BALANCE_OUT': 2025852.49}  ... displaying 10 of 114 total bound parameter sets ...  {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 131824186, 'CURRENCY_RK': 34, 'BALANCE_OUT': 100000.0}, {'ON_DATE': '31.12.2017', 'ACCOUNT_RK': 331483502, 'CURRENCY_RK': 34, 'BALANCE_OUT': 5000000.0})]
+(Background on this error at: https://sqlalche.me/e/14/f405); 3739)
+[2024-07-19T18:07:14.787+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2024-07-19T18:07:15.110+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-07-19T18:07:15.113+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

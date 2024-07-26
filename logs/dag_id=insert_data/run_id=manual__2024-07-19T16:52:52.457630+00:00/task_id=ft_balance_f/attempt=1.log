@@ -1,0 +1,125 @@
+[2024-07-19T16:53:12.736+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-07-19T16:53:12.820+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: insert_data.ft_balance_f manual__2024-07-19T16:52:52.457630+00:00 [queued]>
+[2024-07-19T16:53:12.867+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: insert_data.ft_balance_f manual__2024-07-19T16:52:52.457630+00:00 [queued]>
+[2024-07-19T16:53:12.874+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 3
+[2024-07-19T16:53:13.008+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): ft_balance_f> on 2024-07-19 16:52:52.457630+00:00
+[2024-07-19T16:53:13.127+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62: DeprecationWarning: This process (pid=2735) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2024-07-19T16:53:13.137+0000] {standard_task_runner.py:64} INFO - Started process 2746 to run task
+[2024-07-19T16:53:13.186+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'insert_data', 'ft_balance_f', 'manual__2024-07-19T16:52:52.457630+00:00', '--job-id', '349', '--raw', '--subdir', 'DAGS_FOLDER/insert_data.py', '--cfg-path', '/tmp/tmp6gve36y3']
+[2024-07-19T16:53:13.195+0000] {standard_task_runner.py:91} INFO - Job 349: Subtask ft_balance_f
+[2024-07-19T16:53:13.871+0000] {task_command.py:426} INFO - Running <TaskInstance: insert_data.ft_balance_f manual__2024-07-19T16:52:52.457630+00:00 [running]> on host 04b0ec8dd5cd
+[2024-07-19T16:53:14.259+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sfakhrutdinov' AIRFLOW_CTX_DAG_ID='insert_data' AIRFLOW_CTX_TASK_ID='ft_balance_f' AIRFLOW_CTX_EXECUTION_DATE='2024-07-19T16:52:52.457630+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-07-19T16:52:52.457630+00:00'
+[2024-07-19T16:53:14.309+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-07-19T16:53:14.501+0000] {base.py:84} INFO - Using connection ID 'postgres-db' for task execution.
+[2024-07-19T16:53:14.723+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-07-19T16:53:14.729+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.InvalidSchemaName: schema "DS" does not exist
+LINE 2: CREATE TABLE "DS".ft_balance_f (
+                     ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/insert_data.py", line 13, in insert_data
+    df.to_sql(table_name, engine, schema="DS", if_exists="append", index=False)
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/util/_decorators.py", line 333, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 3008, in to_sql
+    return sql.to_sql(
+           ^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 788, in to_sql
+    return pandas_sql.to_sql(
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1948, in to_sql
+    table = self.prep_table(
+            ^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 1852, in prep_table
+    table.create()
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 936, in create
+    self._execute_create()
+  File "/home/airflow/.local/lib/python3.12/site-packages/pandas/io/sql.py", line 922, in _execute_create
+    self.table.create(bind=self.pd_sql.con)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/schema.py", line 962, in create
+    bind._run_ddl_visitor(ddl.SchemaGenerator, self, checkfirst=checkfirst)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2221, in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/visitors.py", line 524, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/ddl.py", line 899, in visit_table
+    self.connection.execute(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1385, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/sql/ddl.py", line 80, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1477, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.InvalidSchemaName) schema "DS" does not exist
+LINE 2: CREATE TABLE "DS".ft_balance_f (
+                     ^
+
+[SQL: 
+CREATE TABLE "DS".ft_balance_f (
+	"ON_DATE" TEXT, 
+	"ACCOUNT_RK" BIGINT, 
+	"CURRENCY_RK" BIGINT, 
+	"BALANCE_OUT" FLOAT(53)
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/14/f405)
+[2024-07-19T16:53:14.942+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=insert_data, task_id=ft_balance_f, run_id=manual__2024-07-19T16:52:52.457630+00:00, execution_date=20240719T165252, start_date=20240719T165312, end_date=20240719T165314
+[2024-07-19T16:53:15.064+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 349 for task ft_balance_f ((psycopg2.errors.InvalidSchemaName) schema "DS" does not exist
+LINE 2: CREATE TABLE "DS".ft_balance_f (
+                     ^
+
+[SQL: 
+CREATE TABLE "DS".ft_balance_f (
+	"ON_DATE" TEXT, 
+	"ACCOUNT_RK" BIGINT, 
+	"CURRENCY_RK" BIGINT, 
+	"BALANCE_OUT" FLOAT(53)
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/14/f405); 2746)
+[2024-07-19T16:53:15.183+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2024-07-19T16:53:15.414+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-07-19T16:53:15.423+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
