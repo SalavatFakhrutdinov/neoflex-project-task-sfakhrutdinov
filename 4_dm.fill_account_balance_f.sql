@@ -1,16 +1,16 @@
 	--Наполняем таблицу dm.dm_account_balance_f данными за 31.12.2017
 INSERT INTO dm.dm_account_balance_f(on_date, account_rk, balance_out, balance_out_rub)
-	SELECT
+	SELECT DISTINCT
 		b."ON_DATE"
 		,b."ACCOUNT_RK"
 		,b."BALANCE_OUT"
 		,(b."BALANCE_OUT" * COALESCE(e."REDUCED_COURCE", 1)) AS balance_out_rub
 	FROM 
 		ds.ft_balance_f b
-	JOIN ds.md_exchange_rate_d e ON b."CURRENCY_RK" = e."CURRENCY_RK"
-	WHERE
-		b."ON_DATE" BETWEEN e."DATA_ACTUAL_DATE" AND e."DATA_ACTUAL_END_DATE";
-
+	LEFT JOIN ds.md_exchange_rate_d e ON b."CURRENCY_RK" = e."CURRENCY_RK" AND b."ON_DATE" BETWEEN e."DATA_ACTUAL_DATE" AND e."DATA_ACTUAL_END_DATE"
+	ORDER BY 
+		b."ACCOUNT_RK"
+		
 
 CREATE OR REPLACE FUNCTION dm.fill_account_balance_f(i_OnDate date)
 RETURNS VOID AS $$
